@@ -8,6 +8,8 @@
 ## selenium
 - for dynamic https://github.com/titusfortner/webdrivers
 - https://github.com/SeleniumHQ/selenium/wiki/Ruby-Bindings
+- nice test https://www.browserstack.com/guide/selenium-ruby-tutorial
+- finding elements https://www.selenium.dev/documentation/webdriver/elements/finders/
 
 *headless*
 You can get blocked for web scraping. Most website developers try to block automated requests. Therefore, you must use headless browsers and residential proxies to avoid getting blocked. You can use a headless browser such as Selenium, and you don’t need to worry about this issue. Since it is a real browser, there’s no difference between a Selenium request and a real human request.

@@ -75,7 +75,12 @@ task({ :scrape_parse_csv_dynamic => :environment }) do
   options.add_argument('--disable-translate')
   options.add_argument('--headless=new')
   driver = Selenium::WebDriver.for :chrome, options: options
-  response = driver.get 'https://quotes.toscrape.com/js/'
-  driver.quit
-  pp response
+  driver.navigate.to 'https://quotes.toscrape.com/js/'
+  quotes = driver.find_elements(class: 'quote')
+  #text = quote.find_element(class: 'text')
+  quotes.each {|q|
+    pp q.text
+  }
+  #pp quotes.first.text
+ 
 end
