@@ -53,6 +53,8 @@ gem "image_processing", "~> 1.2"
 gem "nokogiri"
 gem "httparty"
 gem "csv"
+## for dynamic pages
+gem "selenium-webdriver"
 # gem "byebug"
 
 group :development, :test do
@@ -74,7 +76,7 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem "selenium-webdriver"
+  #gem "selenium-webdriver"
   gem "webdrivers"
 end
 

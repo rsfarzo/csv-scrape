@@ -58,4 +58,5 @@ task({ :scrape_parse_csv => :environment }) do
       end
     end
   end
+  
 end
