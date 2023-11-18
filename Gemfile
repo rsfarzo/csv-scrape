@@ -55,6 +55,7 @@ gem "httparty"
 gem "csv"
 ## for dynamic pages
 gem "selenium-webdriver"
+gem 'webdrivers' #, '~> 5.0', require: false
 # gem "byebug"
 
 group :development, :test do
@@ -77,7 +78,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   #gem "selenium-webdriver"
-  gem "webdrivers"
+  #gem "webdrivers"
 end
 
 # AppDev Gems

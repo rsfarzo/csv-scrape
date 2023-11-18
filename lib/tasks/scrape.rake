@@ -1,6 +1,5 @@
 desc "Scrape"
 task({ :scrape_ping => :environment }) do
-
   # Making an HTTP request test
   response = HTTParty.get('https://books.toscrape.com/')
   if response.code == 200
@@ -58,5 +57,25 @@ task({ :scrape_parse_csv => :environment }) do
       end
     end
   end
-  
+end
+
+# Scrape dynamic page
+task({ :scrape_parse_csv_dynamic => :environment }) do
+  #driver = Selenium::WebDriver.for(:chrome)
+  #document = Nokogiri::HTML(driver.page_source)
+  #pp document
+
+  #driver = Selenium::WebDriver.for :firefox
+  #response = driver.get 'https://quotes.toscrape.com/js/'
+  #driver.quit
+
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument('--ignore-certificate-errors')
+  #options.add_argument('--disable-popup-blocking')
+  options.add_argument('--disable-translate')
+  options.add_argument('--headless=new')
+  driver = Selenium::WebDriver.for :chrome, options: options
+  response = driver.get 'https://quotes.toscrape.com/js/'
+  driver.quit
+  pp response
 end
