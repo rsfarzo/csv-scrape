@@ -17,14 +17,14 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  database: boilerplate_default
+  database: scrape_default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 development:
   adapter: postgresql
   encoding: unicode
-  database: boilerplate_dev
+  database: scrape_dev
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
   # The specified database role being used to connect to postgres.
@@ -60,7 +60,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: boilerplate_test
+  database: scrape_test
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 

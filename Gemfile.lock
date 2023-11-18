@@ -111,6 +111,7 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
+    csv (3.2.8)
     date (3.3.3)
     debug (1.8.0)
       irb (>= 1.5.0)
@@ -172,6 +173,9 @@ GEM
     http-cookie (1.0.5)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
@@ -219,6 +223,7 @@ GEM
     mini_mime (1.1.5)
     minitest (5.20.0)
     msgpack (1.7.2)
+    multi_xml (0.6.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     net-imap (0.3.7)
@@ -444,6 +449,7 @@ DEPENDENCIES
   bootsnap
   bootstrap
   capybara
+  csv
   debug
   devise
   dotenv-rails
@@ -453,9 +459,11 @@ DEPENDENCIES
   grade_runner
   htmlbeautifier
   http
+  httparty
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
+  nokogiri
   pg (~> 1.1)
   pry-rails
   puma (~> 5.0)
