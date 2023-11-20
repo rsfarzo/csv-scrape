@@ -1,4 +1,7 @@
-desc "Scrape"
+# rails console:
+## require 'rake'
+## Rails.application.load_tasks # <-- MISSING LINE
+## Rake::Task['scrape_parse'].invoke
 task({ :scrape_ping => :environment }) do
   # Making an HTTP request test
   response = HTTParty.get('https://books.toscrape.com/')
@@ -16,48 +19,69 @@ task({ :scrape_parse => :environment }) do
   #document = Nokogiri::HTML4(response.body)
   #puts document
  
-  ## get a 3 pages and scrape
+  ## get n.times pages of article.product_pod
+  n=1
+  ratings_hash = {One: 1, Two: 2, Three: 3, Four: 4, Five: 5 }
   books = []
-  3.times do |i|
+  n.times do |i|
     url = "https://books.toscrape.com/catalogue/page-#{i + 1}.html"
     response = HTTParty.get(url)
     document = Nokogiri::HTML(response.body)
     all_book_containers = document.css('article.product_pod')
-
+    once=true
     all_book_containers.each do |container|
       title = container.css('.image_container > a > img').first['alt']
       price = container.css('.price_color').text.delete('^0-9.')
       availability = container.css('.availability').text.strip
-      book = [title, price, availability]
       #
-      ## books << book
-      pp book
+      ## example: getting rating
+      ## container.css('.star-rating').first.attr("class") 
+      ##    => "star-rating Three"
+      ## container.css('.star-rating').first.attr("class").gsub("star-rating ","")
+      ##    => "Three"
+      rating_str = container.css('.star-rating').first.attr("class").gsub("star-rating ","")
+      pp rating_str.to_sym, ratings_hash[rating_str.to_sym]
+
+      book = [title, price, availability, rating_str]
+      #pp rating
+      ## books << book # array add
+      #pp book
       #pp container
+      #break if once
     end
   end
 end
 
 task({ :scrape_parse_csv => :environment }) do
-  CSV.open('books.csv', 'w+',
+  #CSV.open('books.csv', 'w+',
+  #        write_headers: true,
+  #        headers: %w[Title Price Availability]) do |csv|
+  ratings_hash = {One: 1, Two: 2, Three: 3, Four: 4, Five: 5 }
+  file_name = 'books.csv'
+  CSV.open(file_name, 'w+',
           write_headers: true,
-          headers: %w[Title Price Availability]) do |csv|
-            
+          headers: %w[Title Price Availability Rating]) do |csv|
+    rows = 0          
     50.times do |i|
       url = "https://books.toscrape.com/catalogue/page-#{i + 1}.html"
       response = HTTParty.get(url)
       document = Nokogiri::HTML(response.body)
       all_book_containers = document.css('article.product_pod')
-
+      pp "Parsing #{url}"
       all_book_containers.each do |container|
         title = container.css('h3 a').first['title']
         price = container.css('.price_color').text.delete('^0-9.')
         availability = container.css('.availability').text.strip
-        book = [title, price, availability]
+        rating_str = container.css('.star-rating').first.attr("class").gsub("star-rating ","")
+        rating_int = ratings_hash[rating_str.to_sym]
+        book = [title, price, availability, rating_int]
 
         csv << book # add this row to the csv
       end
-    end
-  end
+      rows += all_book_containers.size
+    end # .times do |i|
+    pp "Saved #{rows} rows & heading to #{file_name}"
+  end # CSV.open
 end
 
 # Scrape dynamic page
