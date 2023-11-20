@@ -33,9 +33,20 @@ task({ :scrape_parse => :environment }) do
     all_book_containers.each do |container|
       title = container.css('.image_container > a > img').first['alt']
       price = container.css('.price_color').text.delete('^0-9.')
-      availability = container.css('.availability').text.strip
-      #
-      ## example: parsing rating
+      availability = container.css('.availability').text.strip 
+      # example 1: title in H3 as well
+      # debugger
+      ## rails console with debugger
+      ## container.css("h3")
+      ## container.css("h3").first
+      ## container.css("h3").first.class
+      ##   => Nokogiri::XML::Element
+      ## container.css("h3").first.children.first['title']
+      ##   => "A Light in the Attic"
+      #title_too = container.css("h3").first.children.first['title']
+      #pp "#{title} #{title_too}"
+
+      ## example 2: getting the rating
       ## container.css('.star-rating').first.attr("class") 
       ##    => "star-rating Three"
       ## container.css('.star-rating').first.attr("class").gsub("star-rating ","")
