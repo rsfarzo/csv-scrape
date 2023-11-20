@@ -19,14 +19,15 @@ task({ :scrape_parse => :environment }) do
   #document = Nokogiri::HTML4(response.body)
   #puts document
  
-  ## get n.times pages of article.product_pod
-  n=1
+  ## get n_pages.times pages of article.product_pod
+  n_pages=1
   ratings_hash = {One: 1, Two: 2, Three: 3, Four: 4, Five: 5 }
   books = []
-  n.times do |i|
+  n_pages.times do |i|
     url = "https://books.toscrape.com/catalogue/page-#{i + 1}.html"
     response = HTTParty.get(url)
     document = Nokogiri::HTML(response.body)
+    # all books on this page:
     all_book_containers = document.css('article.product_pod')
     once=true
     all_book_containers.each do |container|
@@ -34,20 +35,18 @@ task({ :scrape_parse => :environment }) do
       price = container.css('.price_color').text.delete('^0-9.')
       availability = container.css('.availability').text.strip
       #
-      ## example: getting rating
+      ## example: parsing rating
       ## container.css('.star-rating').first.attr("class") 
       ##    => "star-rating Three"
       ## container.css('.star-rating').first.attr("class").gsub("star-rating ","")
       ##    => "Three"
       rating_str = container.css('.star-rating').first.attr("class").gsub("star-rating ","")
-      pp rating_str.to_sym, ratings_hash[rating_str.to_sym]
+      rating_int = ratings_hash[rating_str.to_sym]
 
-      book = [title, price, availability, rating_str]
-      #pp rating
-      ## books << book # array add
-      #pp book
-      #pp container
-      #break if once
+      book = [title, price, availability, rating_int]
+      # add to array array of books:
+      ## books << book
+      pp book
     end
   end
 end
