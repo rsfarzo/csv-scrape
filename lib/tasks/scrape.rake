@@ -43,6 +43,7 @@ task({ :scrape_parse => :environment }) do
       ##   => Nokogiri::XML::Element
       ## container.css("h3").first.children.first['title']
       ##   => "A Light in the Attic"
+      title = container.css('.image_container > a > img').first['alt']
       #title_too = container.css("h3").first.children.first['title']
       #pp "#{title} #{title_too}"
 
