@@ -55,7 +55,7 @@ gem "httparty"
 gem "csv"
 ## for dynamic pages
 gem "selenium-webdriver"
-gem "webdrivers" #, '~> 5.0', require: false
+gem "webdrivers"
 # gem "byebug"
 
 group :development, :test do

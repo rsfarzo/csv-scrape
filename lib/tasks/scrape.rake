@@ -53,14 +53,14 @@ task({ :scrape_parse_csv => :environment }) do
         availability = container.css('.availability').text.strip
         book = [title, price, availability]
 
-        csv << book
+        csv << book # add this row to the csv
       end
     end
   end
 end
 
 # Scrape dynamic page
-task({ :scrape_parse_csv_dynamic => :environment }) do
+task({ :scrape_parse_dynamic => :environment }) do
   #driver = Selenium::WebDriver.for(:chrome)
   #document = Nokogiri::HTML(driver.page_source)
   #pp document
@@ -71,9 +71,10 @@ task({ :scrape_parse_csv_dynamic => :environment }) do
 
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument('--ignore-certificate-errors')
-  #options.add_argument('--disable-popup-blocking')
+  options.add_argument('--disable-popup-blocking')
+  options.add_argument('--disable-notification')
   options.add_argument('--disable-translate')
-  options.add_argument('--headless=new')
+  options.add_argument('--headless=new') # try without
   driver = Selenium::WebDriver.for :chrome, options: options
   driver.navigate.to 'https://quotes.toscrape.com/js/'
   quotes = driver.find_elements(class: 'quote')
@@ -84,3 +85,10 @@ task({ :scrape_parse_csv_dynamic => :environment }) do
   #pp quotes.first.text
  
 end
+
+
+# store in an active record instead of csv
+
+# open a csv and make use of it
+## store in active record
+## make a chart
