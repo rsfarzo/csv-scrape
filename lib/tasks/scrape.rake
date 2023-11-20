@@ -1,6 +1,6 @@
 # rails console:
 ## require 'rake'
-## Rails.application.load_tasks # <-- MISSING LINE
+## Rails.application.load_tasks
 ## Rake::Task['scrape_parse'].invoke
 task({ :scrape_ping => :environment }) do
   # Making an HTTP request test
@@ -85,14 +85,6 @@ end
 
 # Scrape dynamic page
 task({ :scrape_parse_dynamic => :environment }) do
-  #driver = Selenium::WebDriver.for(:chrome)
-  #document = Nokogiri::HTML(driver.page_source)
-  #pp document
-
-  #driver = Selenium::WebDriver.for :firefox
-  #response = driver.get 'https://quotes.toscrape.com/js/'
-  #driver.quit
-
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument('--ignore-certificate-errors')
   options.add_argument('--disable-popup-blocking')
@@ -102,14 +94,39 @@ task({ :scrape_parse_dynamic => :environment }) do
   driver = Selenium::WebDriver.for :chrome, options: options
   driver.navigate.to 'https://quotes.toscrape.com/js/'
   quotes = driver.find_elements(class: 'quote')
-  #text = quote.find_element(class: 'text')
   quotes.each {|q|
-    pp q.text
+    #pp q.text
+    #pp q.attr("class")
+    quote_text = q.find_element(class: 'text').text
+    author =  q.find_element(class: 'author').text
+    puts "#{author}: #{quote_text}"
+    #debugger
   }
-  #pp quotes.first.text
- 
 end
 
+task({ :scrape_parse_csv_dynamic => :environment }) do
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument('--ignore-certificate-errors')
+  options.add_argument('--disable-popup-blocking')
+  options.add_argument('--disable-notification')
+  options.add_argument('--disable-translate')
+  options.add_argument('--headless=new') # try without
+  driver = Selenium::WebDriver.for :chrome, options: options
+  driver.navigate.to 'https://quotes.toscrape.com/js/'
+  quotes = driver.find_elements(class: 'quote')
+
+  file_name = 'quotes.csv'
+  CSV.open(file_name, 'w+',
+          write_headers: true,
+          headers: %w[Author Quote]) do |csv|
+    quotes.each {|q|
+      quote_text = q.find_element(class: 'text').text
+      author =  q.find_element(class: 'author').text
+      puts "#{author}: #{quote_text}"
+      csv << [author, quote_text] 
+    }
+  end 
+end
 
 # store in an active record instead of csv
 
