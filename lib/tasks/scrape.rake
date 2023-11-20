@@ -32,6 +32,7 @@ task({ :scrape_parse => :environment }) do
       #
       ## books << book
       pp book
+      #pp container
     end
   end
 end
